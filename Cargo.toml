@@ -1,0 +1,29 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/mimi-core",
+    "crates/mimi-pty",
+    "crates/mimi-agent",
+    "crates/mimi-app",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/sriram-mv/mimi"
+
+[workspace.dependencies]
+mimi-core = { path = "crates/mimi-core" }
+mimi-pty = { path = "crates/mimi-pty" }
+mimi-agent = { path = "crates/mimi-agent" }
+libc = "0.2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+unicode-width = "0.2"
+
+# Fast binary, small footprint.
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = true
