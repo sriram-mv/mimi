@@ -1,0 +1,9 @@
+[package]
+name = "mimi-core"
+description = "Terminal emulation core for mimi: VT parser, grid, semantic command blocks"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+unicode-width.workspace = true

@@ -1,0 +1,12 @@
+[package]
+name = "mimi-agent"
+description = "Agent control plane for mimi: NDJSON over a per-window Unix socket"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+mimi-core.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+libc.workspace = true
