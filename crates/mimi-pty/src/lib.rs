@@ -184,8 +184,8 @@ impl Pty {
                 if slave < 0 {
                     libc::_exit(126);
                 }
-                libc::ioctl(slave, libc::TIOCSCTTY, 0);
-                libc::ioctl(slave, libc::TIOCSWINSZ, &winsize);
+                libc::ioctl(slave, libc::TIOCSCTTY as _, 0);
+                libc::ioctl(slave, libc::TIOCSWINSZ as _, &winsize);
                 libc::dup2(slave, 0);
                 libc::dup2(slave, 1);
                 libc::dup2(slave, 2);
@@ -233,7 +233,7 @@ impl Pty {
             ws_xpixel: px_width,
             ws_ypixel: px_height,
         };
-        cerr(unsafe { libc::ioctl(self.master.as_raw_fd(), libc::TIOCSWINSZ, &ws) })?;
+        cerr(unsafe { libc::ioctl(self.master.as_raw_fd(), libc::TIOCSWINSZ as _, &ws) })?;
         Ok(())
     }
 
