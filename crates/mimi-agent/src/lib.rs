@@ -313,12 +313,14 @@ mod tests {
     use super::*;
     use std::io::BufRead;
 
-    fn test_setup() -> (
+    type TestSetup = (
         Arc<Mutex<Emulator>>,
         Arc<Mutex<Vec<u8>>>,
         AgentServer,
         PathBuf,
-    ) {
+    );
+
+    fn test_setup() -> TestSetup {
         let emu = Arc::new(Mutex::new(Emulator::new(40, 10, 100)));
         let typed: Arc<Mutex<Vec<u8>>> = Arc::new(Mutex::new(Vec::new()));
         let typed2 = typed.clone();
