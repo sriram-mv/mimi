@@ -45,6 +45,19 @@ fi
 cp shell/vendor_conf.d/mimi.fish "$SHARE_DIR/fish/vendor_conf.d/mimi.fish"
 cp Info.plist "$APP/Contents/Info.plist"
 
+# Build AppIcon.icns from the pre-rendered 1024px master using only stock
+# macOS tools (sips, iconutil), so packaging needs no SVG rasterizer.
+ICONSET=$(mktemp -d)/AppIcon.iconset
+mkdir -p "$ICONSET"
+for size in 16 32 128 256 512; do
+    sips -z "$size" "$size" assets/icon-1024.png --out "$ICONSET/icon_${size}x${size}.png" >/dev/null
+    double=$((size * 2))
+    sips -z "$double" "$double" assets/icon-1024.png --out "$ICONSET/icon_${size}x${size}@2x.png" >/dev/null
+done
+cp assets/icon-1024.png "$ICONSET/icon_512x512@2x.png"
+iconutil -c icns "$ICONSET" -o "$RESOURCES_DIR/AppIcon.icns"
+rm -rf "$(dirname "$ICONSET")"
+
 # Ad-hoc sign so Gatekeeper allows a local launch. Distributing outside your
 # own machine needs a Developer ID signature + notarization; this script
 # does not attempt that.

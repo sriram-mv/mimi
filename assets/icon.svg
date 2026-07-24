@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <title>mimi app icon</title>
+  <defs>
+    <style>
+      .body   { fill: #F6C445; }
+      .cream  { fill: #FCEBC0; }
+      .ink    { fill: #2B2013; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1024" height="1024" rx="224" fill="#0E1116"/>
+
+  <g transform="translate(56,-13) scale(3.8)">
+    <!-- feet -->
+    <g class="body">
+      <ellipse cx="94" cy="220" rx="25" ry="15"/>
+      <ellipse cx="146" cy="220" rx="25" ry="15"/>
+    </g>
+
+    <!-- body -->
+    <ellipse class="body" cx="120" cy="178" rx="60" ry="54"/>
+
+    <!-- arms -->
+    <g class="body">
+      <ellipse cx="67" cy="188" rx="17" ry="24" transform="rotate(-16 67 188)"/>
+      <ellipse cx="173" cy="188" rx="17" ry="24" transform="rotate(16 173 188)"/>
+    </g>
+
+    <!-- belly patch -->
+    <ellipse class="cream" cx="120" cy="192" rx="32" ry="38"/>
+
+    <!-- head -->
+    <circle class="body" cx="120" cy="95" r="42"/>
+
+    <!-- floppy ears, drooping down beside the head -->
+    <g class="body">
+      <rect x="-14" y="-8" width="28" height="150" rx="14" transform="translate(93,54) rotate(23)"/>
+      <rect x="-14" y="-8" width="28" height="150" rx="14" transform="translate(147,54) rotate(-23)"/>
+    </g>
+    <g class="cream">
+      <rect x="-8" y="16" width="16" height="104" rx="8" transform="translate(93,54) rotate(23)"/>
+      <rect x="-8" y="16" width="16" height="104" rx="8" transform="translate(147,54) rotate(-23)"/>
+    </g>
+
+    <!-- face -->
+    <circle class="ink" cx="103" cy="90" r="6.5"/>
+    <circle class="ink" cx="137" cy="90" r="6.5"/>
+    <path class="ink" d="M 112,101 Q120,97 128,101 Q127,109 120,112 Q113,109 112,101 Z"/>
+  </g>
+</svg>

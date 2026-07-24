@@ -779,17 +779,15 @@ impl Term {
             }
             "133" => self.osc_semantic(rest),
             "633" => self.osc_vscode(rest),
-            "10" | "11" => {
-                if rest == "?" {
-                    // Default theme colors; real palette lives in the app.
-                    let (osc, rgb) = if code == "10" {
-                        ("10", "d6d6/dbdb/e1e1")
-                    } else {
-                        ("11", "0e0e/1111/1616")
-                    };
-                    let reply = format!("\x1b]{};rgb:{}\x1b\\", osc, rgb);
-                    self.responses.extend_from_slice(reply.as_bytes());
-                }
+            "10" | "11" if rest == "?" => {
+                // Default theme colors; real palette lives in the app.
+                let (osc, rgb) = if code == "10" {
+                    ("10", "d6d6/dbdb/e1e1")
+                } else {
+                    ("11", "0e0e/1111/1616")
+                };
+                let reply = format!("\x1b]{};rgb:{}\x1b\\", osc, rgb);
+                self.responses.extend_from_slice(reply.as_bytes());
             }
             _ => {}
         }

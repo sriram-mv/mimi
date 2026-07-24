@@ -1,4 +1,13 @@
-# mimi
+<p align="center">
+  <img src="assets/logo.svg" width="140" alt="mimi — a plush yellow bunny mascot" />
+</p>
+
+<h1 align="center">mimi</h1>
+
+<p align="center">
+  <a href="https://github.com/sriram-mv/mimi/actions/workflows/ci.yml"><img src="https://github.com/sriram-mv/mimi/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT license"></a>
+</p>
 
 A minimalist, GPU-accelerated terminal for macOS with [fish](https://fishshell.com/)
 as its default shell and a native control plane for agentic workflows.
