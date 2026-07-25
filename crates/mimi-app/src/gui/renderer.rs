@@ -92,6 +92,9 @@ pub struct Renderer {
     bg_capacity: usize,
     glyph_buf: wgpu::Buffer,
     glyph_capacity: usize,
+    /// Largest surface dimension the device accepts. Configuring a
+    /// surface beyond this is a validation error, so we clamp.
+    max_dim: u32,
     pub padding: f32,
 }
 
@@ -113,11 +116,18 @@ impl Renderer {
             force_fallback_adapter: false,
         }))
         .ok_or("no GPU adapter found")?;
+        // Use the adapter's real limits, not `downlevel_defaults()` — the
+        // latter caps max_texture_dimension_2d at 2048, which a window
+        // wider than 2048 physical pixels (any large or Retina display,
+        // or a tiling WM filling the screen) exceeds, making
+        // `surface.configure` fail validation and panic.
+        let limits = adapter.limits();
+        let max_dim = limits.max_texture_dimension_2d;
         let (device, queue) = pollster::block_on(adapter.request_device(
             &wgpu::DeviceDescriptor {
                 label: Some("mimi"),
                 required_features: wgpu::Features::empty(),
-                required_limits: wgpu::Limits::downlevel_defaults(),
+                required_limits: limits,
                 memory_hints: wgpu::MemoryHints::default(),
             },
             None,
@@ -128,6 +138,8 @@ impl Renderer {
             .get_default_config(&adapter, size.width.max(1), size.height.max(1))
             .ok_or("surface not supported by adapter")?;
         surface_config.present_mode = wgpu::PresentMode::AutoVsync;
+        surface_config.width = surface_config.width.clamp(1, max_dim);
+        surface_config.height = surface_config.height.clamp(1, max_dim);
         surface.configure(&device, &surface_config);
 
         let shader = device.create_shader_module(wgpu::include_wgsl!("shader.wgsl"));
@@ -267,6 +279,7 @@ impl Renderer {
             bg_capacity: 4096,
             glyph_buf,
             glyph_capacity: 4096,
+            max_dim,
             padding,
         })
     }
@@ -303,8 +316,13 @@ impl Renderer {
     }
 
     pub fn resize(&mut self, width: u32, height: u32) {
-        self.surface_config.width = width.max(1);
-        self.surface_config.height = height.max(1);
+        // Clamp to the device limit: a tiling window manager or a large
+        // display can hand us a size the GPU cannot back with a texture,
+        // and `surface.configure` panics rather than erroring.
+        let width = width.clamp(1, self.max_dim);
+        let height = height.clamp(1, self.max_dim);
+        self.surface_config.width = width;
+        self.surface_config.height = height;
         self.surface.configure(&self.device, &self.surface_config);
         self.queue.write_buffer(
             &self.globals_buf,
