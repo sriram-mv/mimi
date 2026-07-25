@@ -11,13 +11,26 @@ pub struct Palette {
     colors: [[f32; 4]; 256],
 }
 
+/// Convert an sRGB byte triplet to linear float for the GPU.
+/// The surface is Bgra8UnormSrgb — the hardware applies the sRGB
+/// transfer on output, so we must feed it linear values.
 fn f(c: [u8; 3]) -> [f32; 4] {
     [
-        c[0] as f32 / 255.0,
-        c[1] as f32 / 255.0,
-        c[2] as f32 / 255.0,
+        srgb_to_linear(c[0]),
+        srgb_to_linear(c[1]),
+        srgb_to_linear(c[2]),
         1.0,
     ]
+}
+
+#[inline]
+fn srgb_to_linear(v: u8) -> f32 {
+    let s = v as f32 / 255.0;
+    if s <= 0.04045 {
+        s / 12.92
+    } else {
+        ((s + 0.055) / 1.055).powf(2.4)
+    }
 }
 
 impl Palette {
