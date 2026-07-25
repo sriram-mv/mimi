@@ -17,6 +17,10 @@ Metal rendering via wgpu, and no async runtime anywhere in the stack — PTY
 I/O, the shell-exit watcher, and agent connections are each one plain OS
 thread. Redraws are event-driven, so an idle window costs nothing.
 
+<p align="center">
+  <img src="assets/screenshot-session.png" width="900" alt="A mimi window showing a file tree, a passing cargo test run, git log output, and JSON from the agent control plane" />
+</p>
+
 ## Why
 
 Most terminals are agent-*tolerant* at best — an agent can pipe text
@@ -32,6 +36,13 @@ $ mimi ctl run "cargo test"
 $ mimi ctl last
 $ mimi ctl watch
 ```
+
+Every command becomes a queryable block with its command line, working
+directory, exit code, byte count, and timings:
+
+<p align="center">
+  <img src="assets/screenshot-agent.png" width="900" alt="Output of mimi ctl blocks, showing recent commands as JSON objects with cwd, exit code, output size, and start and end timestamps" />
+</p>
 
 ## Install (macOS)
 
